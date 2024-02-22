@@ -1,0 +1,69 @@
+---
+- name: Install Git, Golang, and Docker
+  hosts: your_debian_servers
+  become: yes  # This allows Ansible to run commands with sudo
+
+  tasks:
+    - name: Update apt package cache
+      apt:
+        update_cache: yes
+
+    - name: Install Git, Golang, and Docker dependencies
+      apt:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - git
+        - curl
+        - gnupg
+        - lsb-release
+        - ca-certificates
+        - software-properties-common
+
+    - name: Install Golang
+      shell: |
+        wget -qO- https://golang.org/dl/go1.17.6.linux-amd64.tar.gz | sudo tar -C /usr/local -xzf -
+      args:
+        creates: /usr/local/go
+
+    - name: Set up Golang environment variables
+      lineinfile:
+        dest: "{{ ansible_env.HOME }}/.bashrc"
+        line: 'export PATH=$PATH:/usr/local/go/bin'
+      when: ansible_user == 'debian'
+
+    - name: Install Docker dependencies
+      apt:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - gnupg
+        - lsb-release
+
+    - name: Add Docker's official GPG key
+      apt_key:
+        url: https://download.docker.com/linux/debian/gpg
+        state: present
+
+    - name: Add Docker APT repository
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/debian {{ ansible_distribution_release }} stable
+        state: present
+
+    - name: Update apt package cache (again)
+      apt:
+        update_cache: yes
+
+    - name: Install Docker
+      apt:
+        name: docker-ce
+        state: present
+
+    - name: Ensure Docker service is started and enabled
+      service:
+        name: docker
+        state: started
+        enabled: yes
