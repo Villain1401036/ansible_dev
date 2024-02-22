@@ -1,6 +1,6 @@
 ---
 - name: Install Git, Golang, and Docker
-  hosts: your_debian_servers
+  hosts: debian_servers
   become: yes  # This allows Ansible to run commands with sudo
 
   tasks:
