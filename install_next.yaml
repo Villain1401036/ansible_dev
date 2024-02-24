@@ -1,0 +1,33 @@
+---
+- name: Deploy Next.js application with Nginx and PM2
+  hosts: debian_servers
+  become: yes
+  tasks:
+    - name: Move Docker image to virtual server
+      hosts: your_virtual_server
+      gather_facts: no
+      tasks:
+        - name: Copy Docker image to remote server
+          ansible.builtin.shell: >
+            docker save nextjs | ssh user@remote_server_ip 'docker load' 
+
+  #   - name: Configure Nginx
+  #     template:
+  #       src: nginx.conf.j2
+  #       dest: /etc/nginx/sites-available/nextjs_app
+  #     notify:
+  #       - Reload Nginx
+
+  #   - name: Enable Nginx site
+  #     file:
+  #       src: /etc/nginx/sites-available/nextjs_app
+  #       dest: /etc/nginx/sites-enabled/nextjs_app
+  #       state: link
+  #     notify:
+  #       - Reload Nginx
+
+  # handlers:
+  #   - name: Reload Nginx
+  #     service:
+  #       name: nginx
+  #       state: reloaded
