@@ -5,7 +5,7 @@
   tasks:
     - name: Pull Docker image
       docker_image:
-        name: Villain1039532/netjs:latest
+        name: villain1039532/netjs:latest
         source: pull
 
     - name: Run Docker container
