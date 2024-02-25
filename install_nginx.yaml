@@ -3,6 +3,11 @@
   hosts: debian_servers
   become: yes
   tasks:
+    - name: Install Nginx
+      ansible.builtin.apt:
+        name: nginx
+        state: present
+        
     - name: Configure Nginx
       template:
         src: nginx.conf.j2
