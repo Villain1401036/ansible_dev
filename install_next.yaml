@@ -4,13 +4,13 @@
   become: yes
   tasks:
     - name: Check if the Docker container is present
-      shell: docker inspect -f '{{ .State.Running }}' villain1039532/netjs:latest
+      shell: docker inspect -f '{{ .State.Running }}' netjs
       register: container_status
       ignore_errors: yes
 
     - name: Stop the Docker container if running
       docker_container:
-        name: villain1039532/netjs:latest
+        name: netjs
         state: stopped
       when: container_status.stdout == "true"
       register: stopped_container
@@ -26,6 +26,7 @@
         name: netjs
         image: villain1039532/netjs:latest
         state: started
+        recreate: yes
         ports:
           - "3000:3000"
         volumes:
