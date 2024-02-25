@@ -3,6 +3,19 @@
   hosts: debian_servers
   become: yes
   tasks:
+    - name: Check if the Docker container is present
+      shell: docker inspect -f '{{ .State.Running }}' villain1039532/netjs:latest
+      register: container_status
+      ignore_errors: yes
+
+    - name: Stop the Docker container if running
+      docker_container:
+        name: villain1039532/netjs:latest
+        state: stopped
+      when: container_status.stdout == "true"
+      register: stopped_container
+      ignore_errors: yes
+
     - name: Pull Docker image
       docker_image:
         name: villain1039532/netjs:latest
