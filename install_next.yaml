@@ -5,13 +5,13 @@
   tasks:
     - name: Pull Docker image
       docker_image:
-        name: Villain1039532/netjs
+        name: Villain1039532/netjs:latest
         source: pull
 
     - name: Run Docker container
       docker_container:
         name: netjs
-        image: Villain1039532/netjs
+        image: Villain1039532/netjs:latest
         state: started
         ports:
           - "3000:3000"
