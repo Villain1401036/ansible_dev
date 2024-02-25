@@ -8,10 +8,10 @@
       docker_container:
         name: netjs
         state: stopped
-        
+
     - name: Remove Docker image
       docker_image:
-        name: your_image_name
+        name: villain1039532/netjs:latest
         state: absent
         force: yes
 
