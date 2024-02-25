@@ -1,0 +1,36 @@
+---
+- name: Deploy Nginx application 
+  hosts: debian_servers
+  become: yes
+  tasks:
+    - name: Configure Nginx
+      template:
+        src: nginx.conf.j2
+        dest: /etc/nginx/sites-available/nextjs_app
+      notify:
+        - Reload Nginx
+
+    - name: Enable Nginx site
+      file:
+        src: /etc/nginx/sites-available/nextjs_app
+        dest: /etc/nginx/sites-enabled/nextjs_app
+        state: link
+      notify:
+        - Reload Nginx
+      
+    - name: Run shell script
+      ansible.builtin.script: 
+        cmd: /path/to/create_ssl_cert.sh -d example.com -n /etc/nginx/nginx.conf
+        args:
+            - "-d"
+            - "seventwelve.in"
+            - "-d"
+            - "www.seventwelve.in"
+            - "-n"
+            - "/etc/nginx/nginx.conf"
+  handlers:
+    - name: Reload Nginx
+      service:
+        name: nginx
+        state: reloaded
+
