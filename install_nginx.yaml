@@ -7,7 +7,18 @@
       ansible.builtin.apt:
         name: nginx
         state: present
-        
+
+    - name: Run shell script
+      ansible.builtin.script: 
+        cmd: /path/to/create_ssl_cert.sh -d example.com -n /etc/nginx/nginx.conf
+        args:
+            - "-d"
+            - "seventwelve.in"
+            - "-d"
+            - "www.seventwelve.in"
+            - "-n"
+            - "/etc/nginx/nginx.conf"
+            
     - name: Configure Nginx
       template:
         src: nginx.conf.j2
@@ -23,16 +34,7 @@
       notify:
         - Reload Nginx
       
-    - name: Run shell script
-      ansible.builtin.script: 
-        cmd: /path/to/create_ssl_cert.sh -d example.com -n /etc/nginx/nginx.conf
-        args:
-            - "-d"
-            - "seventwelve.in"
-            - "-d"
-            - "www.seventwelve.in"
-            - "-n"
-            - "/etc/nginx/nginx.conf"
+
   handlers:
     - name: Reload Nginx
       service:
