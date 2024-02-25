@@ -8,6 +8,12 @@
       docker_container:
         name: netjs
         state: stopped
+        
+    - name: Remove Docker image
+      docker_image:
+        name: your_image_name
+        state: absent
+        force: yes
 
     - name: Pull Docker image
       docker_image:
