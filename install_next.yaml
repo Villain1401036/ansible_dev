@@ -11,7 +11,7 @@
     - name: Run Docker container
       docker_container:
         name: netjs
-        image: Villain1039532/netjs:latest
+        image: villain1039532/netjs:latest
         state: started
         ports:
           - "3000:3000"
