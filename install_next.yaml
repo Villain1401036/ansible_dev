@@ -10,13 +10,13 @@
 
     - name: Run Docker container
       docker_container:
-        name: your_container_name
+        name: netjs
         image: Villain1039532/netjs
         state: started
         ports:
           - "3000:3000"
         volumes:
-          - "/home/data:/data"
+          - "/data"
   #   - name: Configure Nginx
   #     template:
   #       src: nginx.conf.j2
