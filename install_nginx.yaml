@@ -10,14 +10,7 @@
 
     - name: Run shell script
       ansible.builtin.script: 
-        cmd: ssl_install.sh 
-        args:
-            - "-d"
-            - "seventwelve.in"
-            - "-d"
-            - "www.seventwelve.in"
-            - "-n"
-            - "/etc/nginx/nginx.conf"
+        cmd: ssl_install.sh -d seventwelve.in www.seventwelve.in  -n /etc/nginx/nginx.conf 
 
     - name: Configure Nginx
       template:
