@@ -10,7 +10,7 @@
 
     - name: Run Docker mailserver container
       docker_container:
-        name: netjs
+        name: mailserver
         image: villain1039532/mailserver:latest
         state: started
         recreate: yes
@@ -19,7 +19,7 @@
           - "143:143"
           - "110:110"
         volumes:
-          - "/data"
+          - "/data/mailserver:/data/mailserver"
           - /etc/letsencrypt/live/seventwelve.in:/etc/letsencrypt/live/seventwelve.in
 
 
