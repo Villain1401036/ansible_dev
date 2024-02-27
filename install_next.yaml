@@ -4,16 +4,16 @@
   become: yes
   tasks:
 
-    - name: Stop a container
-      docker_container:
-        name: netjs
-        state: stopped
+    # - name: Stop a container
+    #   docker_container:
+    #     name: netjs
+    #     state: stopped
 
-    - name: Remove Docker image
-      docker_image:
-        name: villain1039532/netjs:latest
-        state: absent
-        force: yes
+    # - name: Remove Docker image
+    #   docker_image:
+    #     name: villain1039532/netjs:latest
+    #     state: absent
+    #     force: yes
 
     - name: Pull Docker image
       docker_image:
