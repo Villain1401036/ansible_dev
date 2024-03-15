@@ -6,4 +6,4 @@
     - name: Start Docker Compose project
       command: docker compose up -d
       args:
-        chdir: /absolute_folder
+        chdir: absolute_folder
