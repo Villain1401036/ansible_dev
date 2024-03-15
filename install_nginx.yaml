@@ -8,21 +8,52 @@
         name: nginx
         state: present
 
-    - name: Run shell script
-      ansible.builtin.script: 
-        cmd: ssl_install.sh -d seventwelve.in www.seventwelve.in  -n /etc/nginx/nginx.conf 
+    - name: Install certbot and firewall dependencies
+      apt:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - python3-pip
+        - ufw
+        - certbot
+        - python3-certbot-nginx
+
+    - name: Configure firewall
+      hosts: all
+      become: yes
+      tasks:
+        - name: Allow SSH and HTTP ports
+          ufw:
+            rule: allow
+            port: "{{ item }}"
+            state: enabled
+          loop:
+            - 22
+            - 80
+            - 443
+
+    - name: Install multiple packages with custom flags
+      hosts: all
+      become: yes
+      tasks:
+        - name: Install packages with custom flags
+          pip:
+            name:
+              - docker
+            state: present
+            extra_args: "--no-deps --ignore-installed --break-system-packages"
 
     - name: Configure Nginx
       template:
         src: nginx.conf.j2
-        dest: /etc/nginx/sites-available/nextjs_app
+        dest: /etc/nginx/sites-available/seventwelve.in
       notify:
         - Reload Nginx
 
     - name: Enable Nginx site
       file:
-        src: /etc/nginx/sites-available/nextjs_app
-        dest: /etc/nginx/sites-enabled/nextjs_app
+        src: /etc/nginx/sites-available/seventwelve.in
+        dest: /etc/nginx/sites-enabled/seventwelve.in
         state: link
       notify:
         - Reload Nginx
@@ -34,3 +65,26 @@
         name: nginx
         state: reloaded
 
+#sudo apt install certbot python3-certbot-nginx
+#sudo apt install nginx -- if not exist 
+
+# add file to nginx folder sites-avaible/<sitedomain>
+# nano /etc/nginx/sites-available/seventwelve.in
+# server {
+#     listen 80;
+#     listen [::]:80;
+#     server_name seventwelve.in www.seventwelve.in;
+
+
+#     # Other SSL configurations can go here
+
+#     location / {
+#         # Your other location directives
+#         proxy_pass http://localhost:3000;
+#     }
+# }
+
+# add it to sites-enabled in nginx etc folder
+#  cp /etc/nginx/sites-available/seventwelve.in /etc/nginx/sites-enabled/
+
+#sudo certbot --nginx -d seventwelve.in -d www.seventwelve.in

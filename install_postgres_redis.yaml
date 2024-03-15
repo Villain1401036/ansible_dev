@@ -1,0 +1,9 @@
+---
+- name: Start Docker Compose project
+  hosts: debian_servers
+  become: yes
+  tasks:
+    - name: Start Docker Compose project
+      command: docker compose up -d
+      args:
+        chdir: .
