@@ -7,6 +7,9 @@ WORKDIR /usr/src/app
 # Expose Redis port
 EXPOSE 6379
 
+#create log directory
+RUN mkdir -p /var/log/redis
+
 # Set Redis configuration (optional)
 COPY redis.conf /usr/src/app/redis.conf
 CMD ["redis-server", "/usr/src/app/redis.conf"]
