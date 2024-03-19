@@ -1,0 +1,15 @@
+# Use an official Redis image as base
+FROM redis:latest
+
+# Set the working directory
+WORKDIR /usr/src/app
+
+# Expose Redis port
+EXPOSE 6379
+
+# Set Redis configuration (optional)
+COPY redis.conf /usr/src/app/redis.conf
+CMD ["redis-server", "/usr/src/app/redis.conf"]
+
+# Mount a volume for persistent data
+VOLUME /data
