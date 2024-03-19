@@ -48,4 +48,4 @@ jobs:
         run: docker stop redis_prod || true && docker rm redis_prod || true
 
       - name: Run Docker container
-        run: docker run -d -p 6379:6379 --name redis_prod villain1039532/redis_prod:latest
+        run: docker run -d -p 6379:6379 --name redis_prod -v /redis/data:/data villain1039532/redis_prod:latest
