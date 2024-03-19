@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 EXPOSE 6379
 
 #create log directory
-RUN mkdir -p /var/log/redis
+RUN mkdir -p /logs
 
 # Set Redis configuration (optional)
 COPY redis.conf /usr/src/app/redis.conf
